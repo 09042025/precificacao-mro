@@ -98,7 +98,7 @@ if uploaded_file:
                     """
 
                     response = client.chat.completions.create(
-                        model="gpt-4",
+                        model="gpt-3.5-turbo",
                         messages=[
                             {"role": "system", "content": "Você é um especialista técnico da Abecom."},
                             {"role": "user", "content": prompt}
