@@ -5,15 +5,18 @@ import openai
 from PIL import Image
 import base64
 
+# Configuração da página deve vir antes de qualquer outro comando Streamlit
+st.set_page_config(page_title="Precificação MRO - Abecom", layout="wide")
+
 # Configurar a chave da OpenAI
 openai.api_key = st.secrets["openai_api_key"]  # Configure essa chave no ambiente Streamlit
 
-# Carregar imagem de fundo e logo
+# Carregar imagem de fundo e logo com layout ajustado
 def set_background_and_logo():
     background_image_path = "b9bfac41-1ece-449a-ae79-62e7eb405277.jpg"
     logo_path = "Sem título.png"
 
-    # Definir fundo
+    # Definir fundo estilizado
     with open(background_image_path, "rb") as image_file:
         encoded_bg = base64.b64encode(image_file.read()).decode()
         st.markdown(
@@ -22,24 +25,42 @@ def set_background_and_logo():
                 .stApp {{
                     background-image: url("data:image/jpg;base64,{encoded_bg}");
                     background-size: cover;
+                    background-position: center top;
                     background-repeat: no-repeat;
                     background-attachment: fixed;
+                    color: white;
+                }}
+                .main .block-container {{
+                    background-color: rgba(0, 0, 0, 0.7);
+                    padding: 2rem;
+                    border-radius: 15px;
+                    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+                }}
+                h1, h2, h3, h4, h5, h6, label, .stButton, .stMarkdown, .stDataFrameContainer {{
+                    color: white !important;
+                }}
+                .stButton>button {{
+                    background-color: #1e90ff;
+                    color: white;
+                    border-radius: 10px;
+                    border: none;
+                    padding: 0.5em 1em;
                 }}
             </style>
             """,
             unsafe_allow_html=True
         )
 
-    # Exibir logo no topo
+    # Exibir logo no topo centralizado
     logo = Image.open(logo_path)
-    st.image(logo, width=150)
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        st.image(logo, width=120)
 
 set_background_and_logo()
 
-st.set_page_config(page_title="Precificação MRO - Abecom", layout="wide")
-st.title("📊 Precificação Automatizada de Produtos MRO")
-
-st.markdown("Faça upload da planilha SAP para precificação automática com IA.")
+st.markdown("## 📊 Precificação Automatizada de Produtos MRO")
+st.markdown("### Faça upload da planilha SAP para precificação automática com IA.")
 
 uploaded_file = st.file_uploader("Upload da Planilha do Cliente (Excel)", type=["xlsx"])
 
